@@ -1,6 +1,8 @@
 CONTENTS OF THIS FOLDER 
 ——————————————
 
+* VCMMR_tutorial.R : A step-by-step implementation of VCM-MR and the associated procedures described in "Modeling Time-Varying Effects of Multilevel Risk Factors of Hospitalizations in Patients on Dialysis".  
+
 * VCMMR_estimation.R : Function for estimation of VCM-MR model parameters described in "Modeling Time-Varying Effects of Multilevel Risk Factors of Hospitalizations in Patients on Dialysis", including estimation of facility-specific fixed effects, time-varying effects of multilevel risk factors, calendar year effect and variance of subject specific random effects.
 
 * VCMMR_simulation.R : Function for simulating one data set under the simulation design described in Web Appendix E of the supplementary materials.
