@@ -2,7 +2,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
                              ){
   
   #############################################################################
-  ## Description: Function for simulating one data set under the simaulation design described
+  ## Description: Function for simulating one data set under the simulation design described
   ##              in Web Appendix E of the supplementary materials.
   ## Args: see above
   ## Returns: data, data.frame with columns c("fid", "sid", "y", "t", "z1", "z2", "x1", "x2", "c", "size", "bi")
@@ -32,16 +32,16 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
   library(bisoreg) 
   
   if(numF==100){ 
-    # 1 - Small, 2 - Medium, 3 - Large
+    # 1 - Large, 2 - Medium, 3 - Small
     facilitySizes <- c(rep(1,34),rep(2,33),rep(3,33))
     
-    # 1 - Flat, 2 - Sqrt, 3 - Quad
+    # 1 - Sqrt, 2 - Flat, 3 - Quad
     facilityShapes <- c(rep(1,12),rep(2,11),rep(3,11),rep(1,11),rep(2,11),rep(3,11),rep(1,11),rep(2,11),rep(3,11))
   } else if (numF==500){
-    # 1 - Small, 2 - Medium, 3 - Large
+    # 1 - Large, 2 - Medium, 3 - Small
     facilitySizes <- c(rep(1,167),rep(2,167),rep(3,166))
     
-    # 1 - Flat, 2 - Sqrt, 3 - Quad
+    # 1 - Sqrt, 2 - Flat, 3 - Quad
     facilityShapes <- c(rep(1,56),rep(2,56),rep(3,55),rep(1,56),rep(2,56),rep(3,55),rep(1,56),rep(2,55),rep(3,55))
   } else {
     stop("Wrong number of facilities")
@@ -56,7 +56,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
     return(OBpoints[OBpoints<=x])
   }
   
-  # Function of facility fixed effects 
+  # Function of facility-specific fixed effects 
   flatFxn <- function(x) {
     return(rep(-1,length(x)))
   }
@@ -92,7 +92,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
     return(-0.2*x+0.1)
   }
   
-  #Zi(j) functions for facility-level covariates
+  # Functions for facility-level covariates Zi(j)
   z1Fxn <- function(x){
     return(0.1*x)
   }
@@ -110,7 +110,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
   # Number of facility-level risk factors
   ntheta <- 2
   
-  # Define the grid points used for the varying coefficient functions except eta(c)
+  # Define the grid points used for the varying coefficient functions gammai(t), theta(t) and beta(t)
   gridPoints <- seq(0,1,1/19)
   ngrid <- length(gridPoints)
   
@@ -127,7 +127,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
   smallSizes <- sample(20:34,numF,replace=TRUE)
   mediumSizes <- sample(35:54,numF,replace=TRUE)
   largeSizes <- sample(55:120,numF,replace=TRUE) 
-  numSubPF <- (facilitySizes == 1)*smallSizes + (facilitySizes == 2)*mediumSizes + (facilitySizes == 3)*largeSizes # Number of subjects 
+  numSubPF <- (facilitySizes == 1)*largeSizes + (facilitySizes == 2)*mediumSizes + (facilitySizes == 3)*smallSizes # Number of subjects 
   sumNi <- sum(numSubPF) # Number of subjects
   Ni <- rep(1:numF,numSubPF)
   numOB <- rep(20, sumNi) # Number of observations per subject
@@ -174,7 +174,7 @@ VCMMR_simulation <- function(numF # number of facilities (scalar)
   
   # Generate longitudinal effects of multilevel risk factors
   df$facilityShapes <- rep(facilityShapes, numDisPF)
-  df$gamma <- (df$facilityShapes == 1)*flatFxn(df$t) + (df$facilityShapes == 2)*sqrtFxn(df$t) + (df$facilityShapes == 3)*quadraticFxn(df$t)
+  df$gamma <- (df$facilityShapes == 1)*sqrtFxn(df$t) + (df$facilityShapes == 2)*flatFxn(df$t) + (df$facilityShapes == 3)*quadraticFxn(df$t)
   df$eta <- etaFxn(df$c)
   df$beta1 <- beta1Fxn(df$t)
   df$beta2 <- beta2Fxn(df$t) 
