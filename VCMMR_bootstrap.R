@@ -22,7 +22,7 @@ VCMMR_bootstrap <- function(nboot,       # number of bootstrap samples (scalar)
                                          # of large, medium and small facilities (vector of length 3)
                             ){
   
-  #############################################################################
+  ##############################################################################
   ## Description: Function for performing bootstrap inference for effects of multilevel factors 
   ##              and calendar year effects as described in "Modeling Time-Varying Effects 
   ##              of Multilevel Risk Factors of Hospitalizations in Patients on Dialysis". 
@@ -36,7 +36,7 @@ VCMMR_bootstrap <- function(nboot,       # number of bootstrap samples (scalar)
   ##              sigma: estimated variance of subject specific random effects from bootstrap samples (vector of length nboot)
   ##              grid: grid points used to estimate the varying coefficient functions gammai(t), theta(t) and beta(t) (vector of length 20)
   ##              etagrid: grid points used to estimate eta(c) (vector of length 20)
-  #############################################################################    
+  ##############################################################################    
   
   # Install missing packages
   list.of.packages <- c("MASS", "statmod", "mvtnorm","bisoreg")
